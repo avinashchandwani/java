@@ -34,10 +34,11 @@ class PrintingJob implements Runnable {
 }
 
 class PrinterQueue {
-    private final Lock queueLock = new ReentrantLock();
+    private final Lock queueLock = new ReentrantLock(true);
 
     public void printJob(Object document) {
         queueLock.lock();
+        System.out.println("Lock Hold Count - "+ ((ReentrantLock)queueLock).getHoldCount());
         try {
             long duration = (long) (Math.random() * 10000);
             System.out.println(Thread.currentThread().getName() + ": PrintQueue: Printing a Job during "
