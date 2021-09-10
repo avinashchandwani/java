@@ -24,6 +24,10 @@ import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import org.apache.commons.lang3.StringUtils;
 
 public class QueryWhereClauseParser {
+	 
+   private static String removeQuotes(String value) {
+        return StringUtils.isEmpty(value) ? null : (value.startsWith("'") && value.endsWith("'") ? value.substring(1, value.length() - 1) : value);
+    }
 
     public static Map parseQuery(String where) {
         if (StringUtils.isEmpty(where)) {
@@ -47,7 +51,7 @@ public class QueryWhereClauseParser {
                 @Override
                 public void visit(EqualsTo expr) {
                     String key = expr.getLeftExpression().toString();
-                    String value = SMSStringUtils.removeQuotes(expr.getRightExpression().toString());
+                    String value = removeQuotes(expr.getRightExpression().toString());
                     queryParams.put(key, value);
                 }
             });
